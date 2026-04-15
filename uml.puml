@@ -1,0 +1,91 @@
+@startuml
+abstract class Persona {
+    -nombre: String
+    -documento: String
+    +mostrar_rol()
+}
+
+class Veterinario extends Persona{
+    -especialidad: String
+    +mostrar_rol()
+    +atender_mascota()
+}
+
+class Recepcionista extends Persona{
+    +mostrar_rol()
+    +registrar_cliente()
+}
+
+class Cliente extends Persona{
+    -telefono: String
+    -mascotas: List<Mascota> = []
+    +mostrar_rol()
+    +agregar_mascota()
+    +mostrar_mascotas()
+}
+
+class Mascota{
+    -nombre: String
+    -especie: String
+    -edad: int
+    -peso: int
+    +mostrar_info()
+}
+
+class Consulta{
+    -mascota: Mascota
+    -veterinario: Veterinario
+    -motivo: String
+    -diagnostico: String
+    -tratamientos: List<Tratamiento> = []
+    +crear_tratamiento()
+    +mostrar_resumen()
+    +calcular_costo_consulta()
+}
+
+class Tratamiento{
+    -nombre: String
+    -costo: double
+    -duracion_dias: int
+    +mostrar_tratamiento()
+}
+
+abstract class MetodoPago{
+    +procesar_pago(monto: double)
+}
+
+class PagoEfectivo extends MetodoPago{
+    +procesar_pago(monto: double)
+}
+
+class PagoTarjeta extends MetodoPago{
+    +procesar_pago(monto: double)
+}
+
+class PagoTransferencia extends MetodoPago{
+    +procesar_pago(monto: double)
+}
+
+class Factura{
+    -consulta: Consulta
+    -subtotal: double
+    -impuesto: double
+    -total: double
+    +calcular_total()
+    +pagar(metodo_pago: MetodoPago)
+}
+
+'Relacion de Agregación entre Cliente y Mascota. El cliente tiene mascotas, pero estas pueden existir independientemente.
+Cliente o-- "0..*" Mascota : tiene
+
+'Relacion de Asociación entre Veterinario y Mascota. Un veterinario puede atender a varias mascotas y una mascota puede ser atendida por distintos veterinarios.
+Veterinario "0..*" -- "0..*" Mascota : atiende
+
+'Relación de Asociación entre Consulta y Veterinario. Una consulta es atendida por un veterinario, pero el veterinario puede atender múltiples consultas.
+Consulta "1" -- "0..*" Mascota : corresponde_a
+Consulta "1" -- "0..*" Veterinario : atendida_por
+
+'Relación de Composición entre Consulta y Tratamiento. Una consulta crea sus tratamientos como parte de sí misma.
+Consulta *-- Tratamiento : crea
+
+@enduml
