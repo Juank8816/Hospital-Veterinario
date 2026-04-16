@@ -88,4 +88,12 @@ Consulta "1" -- "0..*" Veterinario : atendida_por
 'Relación de Composición entre Consulta y Tratamiento. Una consulta crea sus tratamientos como parte de sí misma.
 Consulta *-- Tratamiento : crea
 
+' Relación de Asociación entre Factura y Consulta. Una factura corresponde a una consulta, pero la consulta puede existir sin la factura.
+Factura "1" -- "0..1" Consulta : corresponde_a
+
+' Relación de Asociación entre Factura y MetodoPago. Una factura se paga con un método de pago, pero el método de pago puede ser utilizado para pagar múltiples facturas.
+Factura "1" -- "0..*" MetodoPago : pagada_con
+
+MetodoPago <<abstract>>
+Persona <<abstract>>
 @enduml
